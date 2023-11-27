@@ -61,10 +61,6 @@ all: $(NAME)
 bonus: $(NAME) $(OFILES_B)
 	ar rs $(NAME) $(OFILES_B)
 
-so:
-	$(CC) -fPIC $(CFLAGS) $(CFILES) $(CFILES_B)
-	gcc -shared -o libft.so $(OFILES) $(OFILES_B)
-
 %.o: %.c libft.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -76,4 +72,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re
