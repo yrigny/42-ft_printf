@@ -2,20 +2,41 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 
-NAME = ft_printf
+NAME = libftprintf.a
 
-CFILES = libft/ft_strchr.c \
-	libft/ft_calloc.c \
-	libft/ft_memset.c \
-	libft/ft_atoi.c \
-	libft/ft_bzero.c \
-	libft/ft_strlen.c \
-	libft/ft_memcpy.c \
-	ft_printf.c \
-	fprinter_1.c
+LIBFT_FILES = ft_strchr.c ft_calloc.c ft_memset.c ft_atoi.c ft_bzero.c ft_strlen.c ft_memcpy.c
 
-HEADER = libft/libft.h \
-	printf.h
+PRINTF_FILES = ft_printf.c fprinter_1.c fprinter_2.c
 
-OFILES = $(CFILES:.c=.o)
+LIBFT_SRC = $(addprefix libft/, $(LIBFT_FILES))
 
+SRC = $(LIBFT_SRC) $(PRINTF_FILES)
+
+OFILES = $(SRC:.c=.o)
+
+LIBFT_DEP = libft/libft.h
+
+PRINTF_DEP = printf.h $(LIBFT_SRC)
+
+$(NAME): $(OFILES)
+    ar rcs $(NAME) $(OFILES)
+
+all: $(NAME)
+
+bonus: all
+
+$(LIBFT_SRC:.c=.o): %.o: %.c $(LIBFT_DEP)
+    $(CC) $(CFLAGS) -c $< -o $@
+
+$(PRINTF_FILES:.c=.o): %.o: %.c $(PRINTF_DEP)
+    $(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+    rm -f $(OFILES)
+
+fclean: clean
+    rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all bonus clean fclean re
