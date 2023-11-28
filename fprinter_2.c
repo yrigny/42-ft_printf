@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
 void	fprinter_s(t_flags flags, va_list *p_args, int *p_n)
 {

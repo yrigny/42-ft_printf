@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrigny <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: yifanr <yifanr@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 14:11:59 by yrigny            #+#    #+#             */
-/*   Updated: 2023/11/23 14:18:00 by yrigny           ###   ########.fr       */
+/*   Updated: 2023/11/28 01:02:42 by yifanr           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
 void	parseflag(t_flags *p_flags, const char *fstr)
 {
@@ -57,10 +57,10 @@ void	fprinter(const char *fstr, va_list *p_args, int *p_n)
 
 	iniflagset(&flags);
 	parseflag(&flags, fstr);
-	if (p_flags->left == 1)
-		p_flags->zero = 0;
-	if (p_flags->plus == 1)
-		p_flags->space = 0;
+	if (flags.left == 1)
+		flags.zero = 0;
+	if (flags.plus == 1)
+		flags.space = 0;
 	if (flags.type == 'c')
 		fprinter_c(flags, p_args, p_n);
 	if (flags.type == 's')
@@ -115,7 +115,7 @@ int	ft_printf(const char *fstr, ...)
 	va_end(args);
 	return (n);
 }
-
+/*
 int	main(void)
 {
 	int	i;
@@ -142,4 +142,4 @@ int	main(void)
 	printf("\n[%#010X]", 65535);
 	printf("\n%d bytes printed\n", i - 2);
 	return (0);
-}
+}*/
