@@ -37,7 +37,6 @@ void	printer(const char *fstr, va_list *p_args, int *p_n);
 void	fprinter(const char *fstr, va_list *p_args, int *p_n);
 void	iniflagset(t_flags *p_flagset);
 void	parseflag(t_flags *p_flagset, const char *fstr);
-int		ft_putstr(char *str);
 int		putnchar(int n, char c);
 int		getnumlen(long num, int baselen);
 void	putnbr_base(long nbr, char *base, int baselen);
