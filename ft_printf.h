@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrigny <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: yifanr <yifanr@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 10:55:13 by yrigny            #+#    #+#             */
-/*   Updated: 2023/11/23 11:07:56 by yrigny           ###   ########.fr       */
+/*   Updated: 2023/11/28 02:39:09 by yifanr           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINTF_H
+#ifndef FT_PRINTF_H
 
-# define PRINTF_H
+# define FT_PRINTF_H
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdarg.h>
@@ -27,6 +27,7 @@ typedef struct s_flags
 	bool	hash;
 	bool	zero;
 	int		width;
+	int		precis_y;
 	int		precis;
 	char	type;
 }		t_flags;

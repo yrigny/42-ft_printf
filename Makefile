@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror
 NAME = libftprintf.a
 
 # Source files
-LIBFT_FILES	= ft_strchr.c ft_calloc.c ft_memset.c ft_atoi.c	ft_bzero.c ft_strlen.c ft_memcpy.c
+LIBFT_FILES	= ft_strchr.c ft_atoi.c	ft_strlen.c
 PRINTF_FILES = ft_printf.c fprinter_1.c	fprinter_2.c
 
 # Prefixing	libft directory	to libft files

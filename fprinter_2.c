@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fprinter_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrigny <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: yifanr <yifanr@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:44:18 by yrigny            #+#    #+#             */
-/*   Updated: 2023/11/24 19:44:35 by yrigny           ###   ########.fr       */
+/*   Updated: 2023/11/28 02:31:21 by yifanr           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,18 @@
 
 void	fprinter_s(t_flags flags, va_list *p_args, int *p_n)
 {
-	char	*farg;
 	char	*s;
 	int		printable_s;
 
 	s = va_arg(*p_args, char *);
 	printable_s = ft_strlen(s);
-	if (flags.precis < printable_s)
+	if (flags.precis_y == 1 && flags.precis < printable_s)
 		printable_s = flags.precis;
-	if (flags.width < printable_s)
-	{
-		farg = (char *)ft_calloc(printable_s + 1, 1);
-		ft_memcpy(farg, s, printable_s);
-	}
-	else
-	{
-		farg = (char *)ft_calloc(flags.width + 1, 1);
-		ft_memset(farg, ' ', flags.width);
-		if (flags.left == 1)
-			ft_memcpy(farg, s, printable_s);
-		if (flags.left == 0)
-			ft_memcpy(farg + flags.width - printable_s, s, printable_s);
-	}
-	*p_n += ft_putstr(farg);
-	free(farg);
+	if (flags.width > printable_s && flags.left == 0)
+		*p_n += putnchar(flags.width - printable_s, ' ');
+	*p_n += write(1, s, printable_s);
+	if (flags.width > printable_s && flags.left == 1)
+		*p_n += putnchar(flags.width - printable_s, ' ');
 }
 
 void	fprinter_p(t_flags flags, va_list *p_args, int *p_n)

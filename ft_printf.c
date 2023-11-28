@@ -6,7 +6,7 @@
 /*   By: yifanr <yifanr@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 14:11:59 by yrigny            #+#    #+#             */
-/*   Updated: 2023/11/28 01:02:42 by yifanr           ###   ########.fr       */
+/*   Updated: 2023/11/28 02:38:10 by yifanr           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	parseflag(t_flags *p_flags, const char *fstr)
 	while (*fstr && *fstr >= '0' && *fstr <= '9')
 		fstr++;
 	if (*fstr == '.')
+		p_flags->precis_y = 1;
+	if (*fstr == '.')
 		p_flags->precis = ft_atoi(fstr + 1);
 	while (*fstr && !ft_strchr("cspdiuxX%", *fstr))
 		fstr++;
@@ -47,6 +49,7 @@ void	iniflagset(t_flags *p_flags)
 	p_flags->hash = 0;
 	p_flags->zero = 0;
 	p_flags->width = 0;
+	p_flags->precis_y = 0;
 	p_flags->precis = 0;
 	p_flags->type = 0;
 }
@@ -123,8 +126,8 @@ int	main(void)
 	i = ft_printf("[%-5c]", '*');
 	printf("\n[%-5c]", '*');
 	printf("\n%d bytes printed\n", i - 2);
-	i = ft_printf("[%8.4s]", "hello");
-	printf("\n[%8.4s]", "hello");
+	i = ft_printf("[ %8.0s %s]", "-", "+");
+	printf("\n[ %8.0s %s]", "-", "+");
 	printf("\n%d bytes printed\n", i - 2);
 	i = ft_printf("[%-20p]", &i);
 	printf("\n[%-20p]", &i);
