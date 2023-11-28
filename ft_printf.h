@@ -33,13 +33,15 @@ typedef struct s_flags
 }		t_flags;
 
 int		ft_printf(const char *fstr, ...);
+int		putnchar(int n, char c);
+int		getulen(unsigned long num, unsigned int baselen);
+long	unsign(long n);
 void	printer(const char *fstr, va_list *p_args, int *p_n);
 void	fprinter(const char *fstr, va_list *p_args, int *p_n);
 void	iniflagset(t_flags *p_flagset);
 void	parseflag(t_flags *p_flagset, const char *fstr);
-int		putnchar(int n, char c);
-int		getnumlen(long num, int baselen);
-void	putnbr_base(long nbr, char *base, int baselen);
+void	putnbr_base(long long nbr, char *base, int baselen);
+void	putunbr_base(unsigned long nbr, char *base, unsigned int baselen);
 void	fprinter_c(t_flags flagset, va_list *p_args, int *p_n);
 void	fprinter_s(t_flags flagset, va_list *p_args, int *p_n);
 void	fprinter_p(t_flags flagset, va_list *p_args, int *p_n);

@@ -119,30 +119,11 @@ int	ft_printf(const char *fstr, ...)
 	return (n);
 }
 /*
-int	main(void)
+int	main()
 {
 	int	i;
-
-	i = ft_printf("[%-5c]", '*');
-	printf("\n[%-5c]", '*');
-	printf("\n%d bytes printed\n", i - 2);
-	i = ft_printf("[ %8.0s %s]", "-", "+");
-	printf("\n[ %8.0s %s]", "-", "+");
-	printf("\n%d bytes printed\n", i - 2);
-	i = ft_printf("[%-20p]", &i);
-	printf("\n[%-20p]", &i);
-	printf("\n%d bytes printed\n", i - 2);
-	i = ft_printf("[%+010.5d]", 26);
-	printf("\n[%+010.5d]", 26);
-	printf("\n%d bytes printed\n", i - 2);
-	i = ft_printf("[%010.4u]", 42);
-	printf("\n[%010.4u]", 42);
-	printf("\n%d bytes printed\n", i - 2);
-	i = ft_printf("[%#10.6x]", 65535);
-	printf("\n[%#10.6x]", 65535);
-	printf("\n%d bytes printed\n", i - 2);
-	i = ft_printf("[%#010X]", 65535);
-	printf("\n[%#010X]", 65535);
-	printf("\n%d bytes printed\n", i - 2);
-	return (0);
+	
+	i = getunumlen(ULONG_MAX, 16);
+	printf("i = %d\n", i);
+	return 0;
 }*/

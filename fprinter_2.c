@@ -18,12 +18,18 @@ void	fprinter_s(t_flags flags, va_list *p_args, int *p_n)
 	int		printable_s;
 
 	s = va_arg(*p_args, char *);
-	printable_s = ft_strlen(s);
+	if (!s)
+		printable_s = 6;
+	else
+		printable_s = ft_strlen(s);
 	if (flags.precis_y == 1 && flags.precis < printable_s)
 		printable_s = flags.precis;
 	if (flags.width > printable_s && flags.left == 0)
 		*p_n += putnchar(flags.width - printable_s, ' ');
-	*p_n += write(1, s, printable_s);
+	if (!s && printable_s >= 6)
+		*p_n += write(1, "(null)", 6);
+	if (s)
+		*p_n += write(1, s, printable_s);
 	if (flags.width > printable_s && flags.left == 1)
 		*p_n += putnchar(flags.width - printable_s, ' ');
 }
@@ -31,17 +37,24 @@ void	fprinter_s(t_flags flags, va_list *p_args, int *p_n)
 void	fprinter_p(t_flags flags, va_list *p_args, int *p_n)
 {
 	void	*p;
-	int		numlen;
+	int		printable_p;
 
 	p = va_arg(*p_args, void *);
-	numlen = getnumlen((long)p, 16);
-	if (flags.width > 2 + numlen && flags.left == 0)
-		*p_n += putnchar(flags.width - 2 - numlen, ' ');
-	*p_n += write(1, "0x", 2);
-	putnbr_base((long)p, "0123456789abcdef", 16);
-	*p_n += numlen;
-	if (flags.width > 2 + numlen && flags.left == 1)
-		*p_n += putnchar(flags.width - 2 - numlen, ' ');
+	if (!p)
+		printable_p = 5;
+	else
+		printable_p = getulen((unsigned long)p, 16) + 2;
+	if (flags.width > printable_p && flags.left == 0)
+		*p_n += putnchar(flags.width - printable_p, ' ');
+	if (p)
+		write(1, "0x", 2);
+	if (!p)
+		write(1, "(nil)", 5);
+	else
+		putunbr_base((unsigned long)p, "0123456789abcdef", 16);
+	*p_n += printable_p;
+	if (flags.width > printable_p && flags.left == 1)
+		*p_n += putnchar(flags.width - printable_p, ' ');
 }
 
 void	fprinter_d(t_flags flags, va_list *p_args, int *p_n)
@@ -50,7 +63,7 @@ void	fprinter_d(t_flags flags, va_list *p_args, int *p_n)
 	int	printable_d;
 
 	d = va_arg(*p_args, int);
-	printable_d = getnumlen((long)d, 10);
+	printable_d = getulen(unsign(d), 10);
 	if (flags.precis > printable_d)
 		printable_d = flags.precis;
 	if (flags.plus == 1 || flags.space == 1 || d < 0)
@@ -65,10 +78,10 @@ void	fprinter_d(t_flags flags, va_list *p_args, int *p_n)
 		*p_n += write(1, "-", 1);
 	if (flags.width > printable_d && flags.zero == 1)
 		*p_n += putnchar(flags.width - printable_d, '0');
-	if (flags.precis > getnumlen((long)d, 10))
-		*p_n += putnchar(flags.precis - getnumlen((long)d, 10), '0');
-	putnbr_base((long)d, "0123456789", 10);
-	*p_n += getnumlen((long)d, 10);
+	if (flags.precis > getulen(unsign(d), 10))
+		*p_n += putnchar(flags.precis - getulen(unsign(d), 10), '0');
+	putunbr_base(unsign(d), "0123456789", 10);
+	*p_n += getulen(unsign(d), 10);
 	if (flags.width > printable_d && flags.left == 1)
 		*p_n += putnchar(flags.width - printable_d, ' ');
 }
@@ -80,7 +93,7 @@ void	fprinter_u(t_flags flags, va_list *p_args, int *p_n)
 	int				printable_u;
 
 	u = va_arg(*p_args, unsigned int);
-	numlen = getnumlen((long)u, 10);
+	numlen = getulen((long)u, 10);
 	printable_u = numlen;
 	if (flags.precis > printable_u)
 		printable_u = flags.precis;
@@ -90,7 +103,7 @@ void	fprinter_u(t_flags flags, va_list *p_args, int *p_n)
 		*p_n += putnchar(flags.width - printable_u, ' ');
 	if (flags.precis > numlen)
 		*p_n += putnchar(flags.precis - numlen, '0');
-	putnbr_base((long)u, "0123456789", 10);
+	putunbr_base(u, "0123456789", 10);
 	*p_n += numlen;
 	if (flags.width > printable_u && flags.left == 1)
 		*p_n += putnchar(flags.width - printable_u, ' ');
@@ -103,7 +116,7 @@ void	fprinter_x(t_flags flags, va_list *p_args, int *p_n, char *base)
 	int				printable_x;
 
 	x = va_arg(*p_args, unsigned int);
-	numlen = getnumlen((long)x, 16);
+	numlen = getulen(x, 16);
 	printable_x = numlen;
 	if (flags.precis > printable_x)
 		printable_x = flags.precis;
@@ -111,15 +124,15 @@ void	fprinter_x(t_flags flags, va_list *p_args, int *p_n, char *base)
 		printable_x += 2;
 	if (flags.width > printable_x && flags.left == 0 && flags.zero == 0)
 		*p_n += putnchar(flags.width - printable_x, ' ');
-	if (flags.hash == 1 && flags.type == 'x')
+	if (x != 0 && flags.hash == 1 && flags.type == 'x')
 		*p_n += write(1, "0x", 2);
-	else if (flags.hash == 1 && flags.type == 'X')
+	else if (x != 0 && flags.hash == 1 && flags.type == 'X')
 		*p_n += write(1, "0X", 2);
 	if (flags.width > printable_x && flags.zero == 1)
 		*p_n += putnchar(flags.width - printable_x, '0');
 	else if (flags.precis > numlen)
 		*p_n += putnchar(flags.precis - numlen, '0');
-	putnbr_base((long)x, base, 16);
+	putunbr_base(x, base, 16);
 	*p_n += numlen;
 	if (flags.width > printable_x && flags.left == 1)
 		*p_n += putnchar(flags.width - printable_x, ' ');

@@ -22,12 +22,12 @@ int	putnchar(int n, char c)
 	return (n);
 }
 
-int	getnumlen(long num, int baselen)
+int	getulen(unsigned long num, unsigned int baselen)
 {
 	int	numlen;
 
 	numlen = 1;
-	while (num >= baselen || num <= -baselen)
+	while (num >= baselen)
 	{
 		numlen += 1;
 		num /= baselen;
@@ -35,13 +35,21 @@ int	getnumlen(long num, int baselen)
 	return (numlen);
 }
 
-void	putnbr_base(long nbr, char *base, int baselen)
+long	unsign(long n)
+{
+	if (n < 0)
+		return (-n);
+	else
+		return (n);
+}
+
+void	putunbr_base(unsigned long nbr, char *base, unsigned int baselen)
 {
 	if (nbr < 0)
 		nbr = -nbr;
 	if (nbr >= baselen)
 	{
-		putnbr_base(nbr / baselen, base, baselen);
+		putunbr_base(nbr / baselen, base, baselen);
 		write(1, &base[nbr % baselen], 1);
 	}
 	else
