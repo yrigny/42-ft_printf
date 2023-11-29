@@ -1,3 +1,2 @@
-42 Commun Core project #2 
-passed on 29/11/2023
+42 project #2 
 ✅ 125/125
