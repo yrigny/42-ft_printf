@@ -27,7 +27,7 @@ typedef struct s_flags
 	bool	hash;
 	bool	zero;
 	int		width;
-	int		precis_y;
+	bool	dot;
 	int		precis;
 	char	type;
 }		t_flags;
@@ -40,7 +40,6 @@ void	printer(const char *fstr, va_list *p_args, int *p_n);
 void	fprinter(const char *fstr, va_list *p_args, int *p_n);
 void	iniflagset(t_flags *p_flagset);
 void	parseflag(t_flags *p_flagset, const char *fstr);
-void	putnbr_base(long long nbr, char *base, int baselen);
 void	putunbr_base(unsigned long nbr, char *base, unsigned int baselen);
 void	fprinter_c(t_flags flagset, va_list *p_args, int *p_n);
 void	fprinter_s(t_flags flagset, va_list *p_args, int *p_n);

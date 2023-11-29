@@ -22,7 +22,7 @@ void	fprinter_s(t_flags flags, va_list *p_args, int *p_n)
 		printable_s = 6;
 	else
 		printable_s = ft_strlen(s);
-	if (flags.precis_y == 1 && flags.precis < printable_s)
+	if (flags.dot == 1 && flags.precis < printable_s)
 		printable_s = flags.precis;
 	if (flags.width > printable_s && flags.left == 0)
 		*p_n += putnchar(flags.width - printable_s, ' ');
@@ -64,7 +64,7 @@ void	fprinter_d(t_flags flags, va_list *p_args, int *p_n)
 
 	d = va_arg(*p_args, int);
 	printable_d = getulen(unsign(d), 10);
-	if (flags.precis > printable_d || (!d && flags.precis_y && !flags.precis))
+	if (flags.precis > printable_d || (!d && flags.dot && !flags.precis))
 		printable_d = flags.precis;
 	if (flags.plus == 1 || flags.space == 1 || d < 0)
 		printable_d += 1;
@@ -77,7 +77,7 @@ void	fprinter_d(t_flags flags, va_list *p_args, int *p_n)
 		*p_n += putnchar(flags.width - printable_d, '0');
 	if (flags.precis > getulen(unsign(d), 10))
 		*p_n += putnchar(flags.precis - getulen(unsign(d), 10), '0');
-	if (!(d == 0 && flags.precis_y == 1 && flags.precis == 0))
+	if (!(d == 0 && flags.dot == 1 && flags.precis == 0))
 	{
 		putunbr_base(unsign(d), "0123456789", 10);
 		*p_n += getulen(unsign(d), 10);
@@ -95,7 +95,7 @@ void	fprinter_u(t_flags flags, va_list *p_args, int *p_n)
 	u = va_arg(*p_args, unsigned int);
 	numlen = getulen((long)u, 10);
 	printable_u = numlen;
-	if (flags.precis > printable_u || (!u && flags.precis_y && !flags.precis))
+	if (flags.precis > printable_u || (!u && flags.dot && !flags.precis))
 		printable_u = flags.precis;
 	if (flags.width > printable_u && flags.zero == 1)
 		*p_n += putnchar(flags.width - printable_u, '0');
@@ -103,7 +103,7 @@ void	fprinter_u(t_flags flags, va_list *p_args, int *p_n)
 		*p_n += putnchar(flags.width - printable_u, ' ');
 	if (flags.precis > numlen)
 		*p_n += putnchar(flags.precis - numlen, '0');
-	if (!(u == 0 && flags.precis_y == 1 && flags.precis == 0))
+	if (!(u == 0 && flags.dot == 1 && flags.precis == 0))
 	{
 		putunbr_base(u, "0123456789", 10);
 		*p_n += numlen;
@@ -121,7 +121,7 @@ void	fprinter_x(t_flags flags, va_list *p_args, int *p_n, char *base)
 	x = va_arg(*p_args, unsigned int);
 	numlen = getulen(x, 16);
 	printable_x = numlen;
-	if (flags.precis > printable_x || (!x && flags.precis_y && !flags.precis))
+	if (flags.precis > printable_x || (!x && flags.dot && !flags.precis))
 		printable_x = flags.precis;
 	if (flags.hash == 1)
 		printable_x += 2;
@@ -133,9 +133,9 @@ void	fprinter_x(t_flags flags, va_list *p_args, int *p_n, char *base)
 		*p_n += putnchar(flags.width - printable_x, '0');
 	else if (flags.precis > numlen)
 		*p_n += putnchar(flags.precis - numlen, '0');
-	if (!(x == 0 && flags.precis_y == 1 && flags.precis == 0))
+	if (!(x == 0 && flags.dot == 1 && flags.precis == 0))
 		putunbr_base(x, base, 16);
-	if (!(x == 0 && flags.precis_y == 1 && flags.precis == 0))
+	if (!(x == 0 && flags.dot == 1 && flags.precis == 0))
 		*p_n += numlen;
 	if (flags.width > printable_x && flags.left == 1)
 		*p_n += putnchar(flags.width - printable_x, ' ');

@@ -33,7 +33,7 @@ void	parseflag(t_flags *p_flags, const char *fstr)
 	while (*fstr && *fstr >= '0' && *fstr <= '9')
 		fstr++;
 	if (*fstr == '.')
-		p_flags->precis_y = 1;
+		p_flags->dot = 1;
 	if (*fstr == '.')
 		p_flags->precis = ft_atoi(fstr + 1);
 	while (*fstr && !ft_strchr("cspdiuxX%", *fstr))
@@ -49,7 +49,7 @@ void	iniflagset(t_flags *p_flags)
 	p_flags->hash = 0;
 	p_flags->zero = 0;
 	p_flags->width = 0;
-	p_flags->precis_y = 0;
+	p_flags->dot = 0;
 	p_flags->precis = 0;
 	p_flags->type = 0;
 }
@@ -64,7 +64,7 @@ void	fprinter(const char *fstr, va_list *p_args, int *p_n)
 		flags.zero = 0;
 	if (flags.plus == 1)
 		flags.space = 0;
-	if (flags.precis_y == 1)
+	if (flags.dot == 1)
 		flags.zero = 0;
 	if (flags.type == 'c')
 		fprinter_c(flags, p_args, p_n);
@@ -113,7 +113,7 @@ int	ft_printf(const char *fstr, ...)
 
 	n = 0;
 	if (!fstr)
-		return (n);
+		return (-1);
 	va_start(args, fstr);
 	printer(fstr, &args, &n);
 	va_end(args);
@@ -125,9 +125,38 @@ int	main()
 	int	d1;
 	int	d2;
 	
-	d1 = printf("Expected: [%020d%0002.d%000.5d]", 30, 3, -1);
+	d1 = printf("Expected: [%c%c%c%c%c%c]", 'a', 'i', 'u', 'e', 'o', '\0');
 	printf(", return: %d\n", d1 - 12);
-	d2 = ft_printf("Got:      [%020d%0002.d%000.5d]", 30, 3, -1);
+	d2 = ft_printf("Got:      [%c%c%c%c%c%c]", 'a', 'i', 'u', 'e', 'o', '\0');
+	printf(", return: %d\n", d2 - 12);
+
+	d1 = printf("Expected: [%s%s%s%s%s%s]", "a", "i", "u", "e", "o", "");
+	printf(", return: %d\n", d1 - 12);
+	d2 = ft_printf("Got:      [%s%s%s%s%s%s]", "a", "i", "u", "e", "o", "");
+	printf(", return: %d\n", d2 - 12);
+
+	d1 = printf("Expected: [an address %p]", &d1);
+	printf(", return: %d\n", d1 - 12);
+	d2 = ft_printf("Got:      [an address %p]", &d1);
+	printf(", return: %d\n", d2 - 12);
+
+	d1 = printf("Expected: [NULL address %p]", NULL);
+	printf(", return: %d\n", d1 - 12);
+	d2 = ft_printf("Got:      [NULL address %p]", NULL);
+	printf(", return: %d\n", d2 - 12);
+
+	d1 = printf("Expected: [%d%d%d%d%d%d]", 10, -20, 30, -5, 2147483647, (int)-2147483648);
+	printf(", return: %d\n", d1 - 12);
+	d2 = ft_printf("Got:      [%d%d%d%d%d%d]", 10, -20, 30, -5, 2147483647, (int)-2147483648);
+
+	d1 = printf("Expected: [%i%i%i%i%i%i]", 10, -20, 30, -5, 2147483647, (int)-2147483648);
+	printf(", return: %d\n", d1 - 12);
+	d2 = ft_printf("Got:      [%i%i%i%i%i%i]", 10, -20, 30, -5, 2147483647, (int)-2147483648);
+	printf(", return: %d\n", d2 - 12);
+
+	d1 = printf("Expected: [%u%u%u%u]", (unsigned int)429896724, 0, 32, (unsigned int)4294967295);
+	printf(", return: %d\n", d1 - 12);
+	d2 = ft_printf("Got:      [%u%u%u%u]", (unsigned int)429896724, 0, 32, (unsigned int)4294967295);
 	printf(", return: %d\n", d2 - 12);
 
 	return 0;
