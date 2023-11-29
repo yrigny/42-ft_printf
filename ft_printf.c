@@ -6,7 +6,7 @@
 /*   By: yifanr <yifanr@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 14:11:59 by yrigny            #+#    #+#             */
-/*   Updated: 2023/11/28 02:38:10 by yifanr           ###   ########.fr       */
+/*   Updated: 2023/11/29 01:32:43 by yifanr           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	parseflag(t_flags *p_flags, const char *fstr)
 			p_flags->space = 1;
 		if (*fstr == '#')
 			p_flags->hash = 1;
-		if (*fstr == '0' && !ft_strchr(fstr, '.'))
+		if (*fstr == '0')
 			p_flags->zero = 1;
 		fstr++;
 	}
@@ -64,6 +64,8 @@ void	fprinter(const char *fstr, va_list *p_args, int *p_n)
 		flags.zero = 0;
 	if (flags.plus == 1)
 		flags.space = 0;
+	if (flags.precis_y == 1)
+		flags.zero = 0;
 	if (flags.type == 'c')
 		fprinter_c(flags, p_args, p_n);
 	if (flags.type == 's')
@@ -78,8 +80,7 @@ void	fprinter(const char *fstr, va_list *p_args, int *p_n)
 		fprinter_x(flags, p_args, p_n, "0123456789abcdef");
 	if (flags.type == 'X')
 		fprinter_x(flags, p_args, p_n, "0123456789ABCDEF");
-	if (flags.type == '%')
-		*p_n += write(1, "%", 1);
+	*p_n += write(1, "%", (flags.type == '%'));
 }
 
 void	printer(const char *fstr, va_list *p_args, int *p_n)
@@ -121,9 +122,13 @@ int	ft_printf(const char *fstr, ...)
 /*
 int	main()
 {
-	int	i;
+	int	d1;
+	int	d2;
 	
-	i = getunumlen(ULONG_MAX, 16);
-	printf("i = %d\n", i);
+	d1 = printf("Expected: [%020d%0002.d%000.5d]", 30, 3, -1);
+	printf(", return: %d\n", d1 - 12);
+	d2 = ft_printf("Got:      [%020d%0002.d%000.5d]", 30, 3, -1);
+	printf(", return: %d\n", d2 - 12);
+
 	return 0;
 }*/
